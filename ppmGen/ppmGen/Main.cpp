@@ -32,19 +32,28 @@ const int RED = 0;
 const int GREEN = 1;
 const int BLUE = 2;
 
-void setBackground(int imagePixels[][ROWS][COLS]);
+void setBackground(int imagePixels[][ROWS][COLS], char choice);
 void drawSquare(int imagePixels[][ROWS][COLS]);
-void createImage(int imagePixels[][ROWS][COLS]);
+void createImage(int imagePixels[][ROWS][COLS], char choice);
 void saveImage(const int imagePixels[][ROWS][COLS]);
 
 
 void main()
 {
 	static int imagePixels[COLOR_PAGE][ROWS][COLS] = {};
+	char userResponse = ' ';
+
+	
+
+	do
+	{
+		cout << "Do you want: A) a gradient background OR B) a RGB background?\n" << "Please enter A OR B" << endl;
+		cin >> userResponse;
+	} while (toupper(userResponse) != 'A' && toupper(userResponse) != 'B');
 
 	cout << "Creating image...\n" << endl;
 
-	createImage(imagePixels);
+	createImage(imagePixels, userResponse);
 
 	cout << "Image created!\n\nSaving to .ppm file..." << endl;
 
@@ -58,25 +67,46 @@ void main()
 // Function: setBackground
 // Description:
 //		Divide the background into three equal sections
-//		and color each section red, green & blue respectively  
+//		and color each section red, green & blue respectively 
+//		OR color it gradient
 //
 // Arguments:
 //		imagePixels (O) -- 3D array that holds the image
+//		choice (I) -- background type
 // Return Values:
 //		NONE
 //===============================================================
-void setBackground(int imagePixels[][ROWS][COLS])
+void setBackground(int imagePixels[][ROWS][COLS], char choice)
 {
 	int sectionSize = ROWS / 3;
+	//int startingColor = 255;
+	int color = 0;
 
-	//color each section
-	for (int sectionIndx = 0; sectionIndx != 3; sectionIndx++)
+	if (toupper(choice) == 'A')
 	{
-		for (int rowIndx = (sectionIndx * sectionSize); rowIndx < (sectionSize * (sectionIndx + 1)); rowIndx++)//start each new section where the last one left off
+		for (int rowIndx = 0; rowIndx < ROWS; rowIndx++)
 		{
 			for (int colIndx = 0; colIndx < COLS; colIndx++)
 			{
-				imagePixels[sectionIndx][rowIndx][colIndx] = 255;
+				imagePixels[color][rowIndx][colIndx] = 255;
+				imagePixels[color][rowIndx][colIndx] = 0;
+				imagePixels[color][rowIndx][colIndx] = 0;
+			}
+			//if()
+			color = color + 1;
+		}
+	}
+	else
+	{
+		//color each section
+		for (int sectionIndx = 0; sectionIndx != 3; sectionIndx++)
+		{
+			for (int rowIndx = (sectionIndx * sectionSize); rowIndx < (sectionSize * (sectionIndx + 1)); rowIndx++)//start each new section where the last one left off
+			{
+				for (int colIndx = 0; colIndx < COLS; colIndx++)
+				{
+					imagePixels[sectionIndx][rowIndx][colIndx] = 255;
+				}
 			}
 		}
 	}
@@ -95,19 +125,16 @@ void setBackground(int imagePixels[][ROWS][COLS])
 //================================================================
 void drawSquare(int imagePixels[][ROWS][COLS])
 {
-	
-	//for (int colorIndx = 0; colorIndx < COLOR_PAGE; colorIndx++)
-	//{
-		for (int rowIndx = 0; rowIndx != BOX_SIDE; rowIndx++)//will print from left to right, bottom to top
+	//will print from left to right, bottom to top
+	for (int rowIndx = 0; rowIndx != BOX_SIDE; rowIndx++)
+	{
+		for (int colIndx = 0; colIndx != BOX_SIDE; colIndx++)
 		{
-			for (int colIndx = 0; colIndx != BOX_SIDE; colIndx++)
-			{
-				imagePixels[RED][BOX_START_POINT_Y + rowIndx][BOX_START_POINT_X + colIndx] = 255;
-				imagePixels[GREEN][BOX_START_POINT_Y + rowIndx][BOX_START_POINT_X + colIndx] = 255;
-				imagePixels[BLUE][BOX_START_POINT_Y + rowIndx][BOX_START_POINT_X + colIndx] = 0;
-			}
+			imagePixels[RED][BOX_START_POINT_Y + rowIndx][BOX_START_POINT_X + colIndx] = 255;
+			imagePixels[GREEN][BOX_START_POINT_Y + rowIndx][BOX_START_POINT_X + colIndx] = 255;
+			imagePixels[BLUE][BOX_START_POINT_Y + rowIndx][BOX_START_POINT_X + colIndx] = 0;
 		}
-	//}
+	}
 }
 
 
@@ -118,15 +145,15 @@ void drawSquare(int imagePixels[][ROWS][COLS])
 //
 // Arguments:
 //		imagePixels (O) -- 3D array that image will be put in
+//		choice (I) -- background type
 // Return Values:
 //		NONE
 //================================================================
-void createImage(int imagePixels[][ROWS][COLS])
+void createImage(int imagePixels[][ROWS][COLS], char choice)
 {
-	setBackground(imagePixels);
+	setBackground(imagePixels, choice);
 
 	drawSquare(imagePixels);
-
 }
 
 
@@ -157,11 +184,13 @@ void saveImage(const int imagePixels[][ROWS][COLS])
 		{
 			for (int colorIndx = 0; colorIndx < COLOR_PAGE; colorIndx++)
 			{
-				fileWrite <<  imagePixels[colorIndx][rowIndx][colIndx] << " ";
+				fileWrite << imagePixels[colorIndx][rowIndx][colIndx] << " ";
 			}
 			fileWrite << "  ";
 		}
 		fileWrite << "\n";
 	}
+
+	fileWrite.close();
 
 }
