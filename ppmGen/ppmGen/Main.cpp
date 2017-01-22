@@ -15,14 +15,25 @@ Description:
 using namespace std;
 
 const int COLOR_PAGE = 3;
-const int ROWS = 600; //Height
-const int COLS = 800; //Width
+const int ROWS = 1000; //Height
+const int COLS = 900; //Width
+
+//Center point(pixel) of the image
+const int CENTER_POINT_X = ((COLS / 2) + 1);
+const int CENTER_POINT_Y = ((ROWS / 2) + 1);
+
+const int BOX_SIDE = ((((COLS - 50) * 2) - COLS) / 2);//We do this calculation so that the if the image is larger than 200x300, the 50x50 box will scale accordingly 
+
+//Find the bottom left corner of the box
+const int BOX_START_POINT_X = (CENTER_POINT_X - (BOX_SIDE / 2));
+const int BOX_START_POINT_Y = (CENTER_POINT_Y - (BOX_SIDE / 2));
 
 const int RED = 0;
 const int GREEN = 1;
 const int BLUE = 2;
 
 void setBackground(int imagePixels[][ROWS][COLS]);
+void drawSquare(int imagePixels[][ROWS][COLS]);
 void createImage(int imagePixels[][ROWS][COLS]);
 void saveImage(const int imagePixels[][ROWS][COLS]);
 
@@ -41,6 +52,7 @@ void main()
 
 	cout << "Image saved!" << endl;
 }
+
 
 //===============================================================
 // Function: setBackground
@@ -72,7 +84,35 @@ void setBackground(int imagePixels[][ROWS][COLS])
 
 
 //===============================================================
-// Function: creatImage
+// Function: drawSquare
+// Description: Create a square pixel by pixle and store it in
+//				the given 3D array
+//
+// Arguments:
+//		imagePixels (O) -- 3D array that image will be put in
+// Return Values:
+//		NONE
+//================================================================
+void drawSquare(int imagePixels[][ROWS][COLS])
+{
+	
+	//for (int colorIndx = 0; colorIndx < COLOR_PAGE; colorIndx++)
+	//{
+		for (int rowIndx = 0; rowIndx != BOX_SIDE; rowIndx++)//will print from left to right, bottom to top
+		{
+			for (int colIndx = 0; colIndx != BOX_SIDE; colIndx++)
+			{
+				imagePixels[RED][BOX_START_POINT_Y + rowIndx][BOX_START_POINT_X + colIndx] = 255;
+				imagePixels[GREEN][BOX_START_POINT_Y + rowIndx][BOX_START_POINT_X + colIndx] = 255;
+				imagePixels[BLUE][BOX_START_POINT_Y + rowIndx][BOX_START_POINT_X + colIndx] = 0;
+			}
+		}
+	//}
+}
+
+
+//===============================================================
+// Function: createImage
 // Description: Create an image pixel by pixle and store it in
 //				the given 3D array
 //
@@ -84,6 +124,9 @@ void setBackground(int imagePixels[][ROWS][COLS])
 void createImage(int imagePixels[][ROWS][COLS])
 {
 	setBackground(imagePixels);
+
+	drawSquare(imagePixels);
+
 }
 
 
