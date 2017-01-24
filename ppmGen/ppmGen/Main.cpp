@@ -22,11 +22,11 @@ const int COLS = 1000; //Width
 const int CENTER_POINT_X = (COLS / 2);
 const int CENTER_POINT_Y = (ROWS / 2);
 
-
+//Shape sizes
 const int BOX_SIDE = ((((COLS - 50) * 2) - COLS) / 2);//We do this calculation so that if the image is larger than 200x300, the 50x50 box or circle will scale accordingly 
 const int CIRCLE_RADIUS = 250;
 
-//Find the bottom left corner of the box
+//Find the top left corner of the box
 const int BOX_START_POINT_X = (CENTER_POINT_X - (BOX_SIDE / 2));
 const int BOX_START_POINT_Y = (CENTER_POINT_Y - (BOX_SIDE / 2));
 
@@ -37,6 +37,7 @@ const float PI = 3.14159265;
 
 //Function protoypes
 void setBackground(int imagePixels[][ROWS][COLS], char choice);
+void drawSunset(int imagePixels[][ROWS][COLS]);
 void drawCircle(int imagePixels[][ROWS][COLS]);
 void drawSquare(int imagePixels[][ROWS][COLS]);
 void createImage(int imagePixels[][ROWS][COLS], char backgroundChoice, char shapeChoice);
@@ -49,27 +50,29 @@ void main()
 	char backgroundChoice = ' ';
 	char imageChoice = ' ';
 
+	//User picks background type
 	do
 	{
 		cout << "\nDo you want: A) a gradient background OR B) a RGB background?\n" << "Please enter A OR B" << endl;
 		cin >> backgroundChoice;
 	} while (toupper(backgroundChoice) != 'A' && toupper(backgroundChoice) != 'B');
 
+	//User picks image
 	do
 	{
-		cout << "\n\nDo you want draw a: [S]quare OR [C]ircle?\n" << "Please enter S OR C" << endl;
+		cout << "\n\nDo you want draw a: s[Q]uare, [C]ircle? OR [S]unset\n" << "Please enter Q, C OR S" << endl;
 		cin >> imageChoice;
-	} while (toupper(imageChoice) != 'S' && toupper(imageChoice) != 'C');
+	} while (toupper(imageChoice) != 'Q' && toupper(imageChoice) != 'C' && toupper(imageChoice) != 'S');
 
+
+	//Draw and create the ppm file
 	cout << "Creating image...\n" << endl;
-
 	createImage(imagePixels, backgroundChoice, imageChoice);
 
 	cout << "Image created!\n\nSaving to .ppm file..." << endl;
-
 	saveImage(imagePixels);
 
-	cout << "Image saved!" << endl;
+	cout << "Image saved!\n\n";
 }
 
 
@@ -92,17 +95,18 @@ void setBackground(int imagePixels[][ROWS][COLS], char choice)
 
 	if (toupper(choice) == 'A')
 	{
-		int sectionSize = ROWS / 255;//Because 255 is smaller than the amout of rows we have, we have to fit that value evenly into size of ROWS
+		int sectionSize = ROWS / 255;//Because 255 is smaller than the amout of rows we have, we have to fit that value evenly into the size of ROWS
 
+		//Draw gradient
 		for (int sectionIndx = 0; sectionIndx != round((ROWS / sectionSize)); sectionIndx++)
 		{
 			for (int rowIndx = (sectionIndx * sectionSize); rowIndx < (sectionSize * (sectionIndx + 1)); rowIndx++)//start each new section where the last one left off
 			{
 				for (int colIndx = 0; colIndx < COLS; colIndx++)
 				{
-					imagePixels[RED][rowIndx][colIndx] = pixelIntensity;
+					imagePixels[RED][rowIndx][colIndx] = 255 - pixelIntensity;
 					imagePixels[GREEN][rowIndx][colIndx] = 40;
-					imagePixels[BLUE][rowIndx][colIndx] = 255 - pixelIntensity;
+					imagePixels[BLUE][rowIndx][colIndx] = pixelIntensity;
 				}
 			}
 			pixelIntensity = pixelIntensity + 1;
@@ -112,7 +116,8 @@ void setBackground(int imagePixels[][ROWS][COLS], char choice)
 	else
 	{
 		int sectionSize = ROWS / 3;
-		//color each section
+
+		//Draw RGB sections
 		for (int sectionIndx = 0; sectionIndx != 3; sectionIndx++)
 		{
 			for (int rowIndx = (sectionIndx * sectionSize); rowIndx < (sectionSize * (sectionIndx + 1)); rowIndx++)//start each new section where the last one left off
@@ -126,6 +131,51 @@ void setBackground(int imagePixels[][ROWS][COLS], char choice)
 	}
 }
 
+//===============================================================
+// Function: drawSunset
+// Description: Create a sunset
+//
+// Arguments:
+//		imagePixels (O) -- 3D array that image will be put in
+// Return Values:
+//		NONE
+//===============================================================
+void drawSunset(int imagePixels[][ROWS][COLS])
+{
+	int reflectionSize = CIRCLE_RADIUS * 2;
+	int reflectionXCord = (CENTER_POINT_X - CIRCLE_RADIUS);
+
+	//Override whatever background was chosen before
+	setBackground(imagePixels, 'A');
+
+	//draw the sun
+	drawCircle(imagePixels);
+
+	//Draw the cliff
+	for (int rowIndx = 0; rowIndx != 350; rowIndx++)
+	{
+		for (int colIndx = 0; colIndx < COLS; colIndx++)
+		{
+			imagePixels[RED][(ROWS - 1) - rowIndx][BOX_START_POINT_X + colIndx] = 102;
+			imagePixels[GREEN][(ROWS - 1) - rowIndx][BOX_START_POINT_X + colIndx] = 51;
+			imagePixels[BLUE][(ROWS - 1) - rowIndx][BOX_START_POINT_X + colIndx] = 0;
+		}
+
+	}
+
+	//Draw reflection
+	for (int rowIndx = 450; rowIndx < ROWS; rowIndx++)
+	{
+		for (int colIndx = 0; colIndx != reflectionSize; colIndx++)
+		{
+			imagePixels[RED][rowIndx][reflectionXCord + colIndx] = 204;
+			imagePixels[GREEN][rowIndx][reflectionXCord + colIndx] = 153;
+			imagePixels[BLUE][rowIndx][reflectionXCord + colIndx] = 0;
+		}
+		reflectionSize = reflectionSize + 2;
+		reflectionXCord--;
+	}
+}
 
 //===============================================================
 // Function: drawCircle
@@ -142,52 +192,11 @@ void drawCircle(int imagePixels[][ROWS][COLS])
 	int xCord = 0;
 	int yCord = 0;
 
-	//Bar length idea...
-	/*int xCord = CENTER_POINT_X;
-	int yCord = CENTER_POINT_Y + CIRCLE_RADIUS;
-	int barLength = 1;
-
-
-	for (int radIndx = 0; radIndx != (CIRCLE_RADIUS); radIndx++)
-	{
-		for (int colIndx = 0; colIndx != barLength; colIndx = colIndx++)
-		{
-			imagePixels[RED][yCord][xCord + colIndx] = 255;
-			imagePixels[GREEN][yCord][xCord + colIndx] = 255;
-			imagePixels[BLUE][yCord][xCord + colIndx] = 0;
-		}
-		xCord--;
-		yCord--;
-		barLength = barLength + 2;
-	}
-
-	barLength = barLength - 2;
-	xCord++;
-	yCord++;
-
-	for (int radIndx = 0; radIndx != (CIRCLE_RADIUS); radIndx++)
-	{
-		for (int colIndx = 0; colIndx != barLength; colIndx = colIndx++)
-		{
-			imagePixels[RED][yCord][xCord + colIndx] = 255;
-			imagePixels[GREEN][yCord][xCord + colIndx] = 255;
-			imagePixels[BLUE][yCord][xCord + colIndx] = 0;
-		}
-		xCord++;
-		yCord++;
-		barLength = barLength - 2;
-	}*/
-
-
-	// 2pi CIRCLE OPTION #1
-	for (int radIndx = CIRCLE_RADIUS; radIndx != 0; radIndx--)//Shrink the radius by one each pass so we eventual fill the circle
+	for (int radIndx = CIRCLE_RADIUS; radIndx != 0; radIndx--)//Shrink the radius by one each pass so we eventually fill the circle
 	{
 		for (float radian = 0; radian < (2.0*PI); radian = radian + .0001)
 		{
-
-			//x = cx + r * cos(a)
-			//y = (cy + r * sin(a)) + cy
-
+			//Get the x & y coordinate of each point along the circle
 			xCord = abs(round(((0 + static_cast<float>(radIndx)) * cos(radian))) + CENTER_POINT_X);
 			yCord = abs(round(((0 + static_cast<float>(radIndx)) * sin(radian))) + CENTER_POINT_Y);
 
@@ -211,7 +220,7 @@ void drawCircle(int imagePixels[][ROWS][COLS])
 //===============================================================
 void drawSquare(int imagePixels[][ROWS][COLS])
 {
-	//Will print from left to right, bottom to top (starting at the bottom left corner of the box)
+	//Print from left to right, top to bottom (starting at the top left corner of the box)
 	for (int rowIndx = 0; rowIndx != BOX_SIDE; rowIndx++)
 	{
 		for (int colIndx = 0; colIndx != BOX_SIDE; colIndx++)
@@ -240,13 +249,17 @@ void createImage(int imagePixels[][ROWS][COLS], char backgroundChoice, char shap
 {
 	setBackground(imagePixels, backgroundChoice);
 
-	if (toupper(shapeChoice) == 'S')
+	if (toupper(shapeChoice) == 'Q')
 	{
 		drawSquare(imagePixels);
 	}
-	else
+	else if (toupper(shapeChoice) == 'C')
 	{
 		drawCircle(imagePixels);
+	}
+	else if (toupper(shapeChoice) == 'S')
+	{
+		drawSunset(imagePixels);
 	}
 }
 

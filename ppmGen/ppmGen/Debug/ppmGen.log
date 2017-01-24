@@ -1,7 +1,7 @@
 ﻿  Main.cpp
 d:\demetri van sickle\documents\github\cs-162\ppmgen\ppmgen\main.cpp(36): warning C4305: 'initializing': truncation from 'double' to 'float'
-d:\demetri van sickle\documents\github\cs-162\ppmgen\ppmgen\main.cpp(185): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-d:\demetri van sickle\documents\github\cs-162\ppmgen\ppmgen\main.cpp(191): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-d:\demetri van sickle\documents\github\cs-162\ppmgen\ppmgen\main.cpp(192): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+d:\demetri van sickle\documents\github\cs-162\ppmgen\ppmgen\main.cpp(196): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+d:\demetri van sickle\documents\github\cs-162\ppmgen\ppmgen\main.cpp(199): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+d:\demetri van sickle\documents\github\cs-162\ppmgen\ppmgen\main.cpp(200): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
   ppmGen.vcxproj -> D:\Demetri Van Sickle\Documents\GitHub\CS-162\ppmGen\Debug\ppmGen.exe
   ppmGen.vcxproj -> D:\Demetri Van Sickle\Documents\GitHub\CS-162\ppmGen\Debug\ppmGen.pdb (Full PDB)
