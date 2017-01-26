@@ -15,8 +15,8 @@ Description:
 using namespace std;
 
 const int COLOR_PAGE = 3;
-const int ROWS = 800; //Height
-const int COLS = 1000; //Width
+const int ROWS = 800; //Height 800
+const int COLS = 1000; //Width 1000
 
 //Center point(pixel) of the over all image
 const int CENTER_POINT_X = (COLS / 2);
