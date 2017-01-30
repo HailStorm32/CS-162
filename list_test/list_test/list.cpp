@@ -4,25 +4,29 @@
 
 using namespace std;
 
+//Initialize the variables 
 List::List()
 {
+	//Initialize every string in the array to nothing (NULL)
 	for (int itemIndx = 0; itemIndx < MAX_ITEMS; itemIndx++)
 	{
-		listContents[itemIndx] = "";
+		items[itemIndx] = "";
 	}
 
 	totalItems = 0;
 }
 
+
 bool List::insert(string text)
 {
-	if (text.empty() == true || inList(text) == true || totalItems == MAX_ITEMS)
+	//Make sure the string given isnt null, isnt already in the list or the list is full
+	if (text.empty() == true || inList(text) >= 0 || isFull() == true)
 	{
 		return false;
 	}
 	else
 	{
-
+		items[findEmpty()] = text;
 		totalItems++;
 		return true;
 	}
@@ -30,31 +34,51 @@ bool List::insert(string text)
 
 bool List::remove(string text)
 {
-	return false;
-}
+	int itemLocation = -1;
+	int emptyLocation = 0;
 
-bool List::inList(string text) const
-{
-	if (text.empty() == true)
+	//Make sure that the string exsits and that the string given wasn't null
+	if (inList(text) < 0 || text.empty() == true)
 	{
-		return true;
+		return false;
 	}
 
+	//Get the item location and delete it
+	itemLocation = inList(text);
+	items[itemLocation] = "";
+
+	//while the deleted string wasn't the last item & the next item isn't empty
+	while (itemLocation != (MAX_ITEMS - 1) && items[itemLocation + 1].empty() != true)
+	{
+		itemLocation++;
+		emptyLocation = findEmpty();
+
+		items[itemLocation].swap(items[emptyLocation]);
+	}
+
+	totalItems--;
+	return true;
+}
+
+int List::inList(string textToFind) const
+{
 	for (int itemIndx = 0; itemIndx < MAX_ITEMS; itemIndx++)
 	{
-		if (listContents[itemIndx].find(text) != string::npos)
+		if (items[itemIndx] == textToFind)
 		{
-			return true;
+			return itemIndx;
 		}
 	}
-	return false;
+	return -1;
 }
 
+//returns a bool value if the array is empty of not 
 bool List::isEmpty() const
 {
+	//scan each string to see if it is empty
 	for (int itemIndx = 0; itemIndx < MAX_ITEMS; itemIndx++)
 	{
-		if (listContents[itemIndx].empty() == false)
+		if (items[itemIndx].empty() != true)
 		{
 			return false;
 		}
@@ -62,6 +86,7 @@ bool List::isEmpty() const
 	return true;
 }
 
+//returns a bool value if the array is empty of not
 bool List::isFull() const
 {
 	if (totalItems == MAX_ITEMS)
@@ -76,4 +101,22 @@ bool List::isFull() const
 
 void List::print()
 {
+	for (int itemIndx = 0; itemIndx < MAX_ITEMS; itemIndx++)
+	{
+		cout << "\t[" << itemIndx + 1 << "]: " << items[itemIndx] << endl;
+	}
+	cout << "\n";
+}
+
+//Find the first empty slot in the string array and return the indx number
+int List::findEmpty() const
+{
+	for (int itemIndx = 0; itemIndx < MAX_ITEMS; itemIndx++)
+	{
+		if (items[itemIndx].empty() == true)
+		{
+			return itemIndx;
+		}
+	}
+	return -1;
 }
