@@ -32,10 +32,10 @@ public:
 		string -- no empty string
 	Returns:
 		-1 -- if failed
-		# >= 0 -- if succeeded
+		# >= 0 -- if succeeded (and index where word was found)
 	*/
 	int inList(string text) const;
-	
+
 	/*
 	Input:
 		NONE
@@ -71,7 +71,7 @@ private:
 		NONE
 	Returns:
 		-1 -- if failed
-		# >= 0 -- if succeeded
+		# >= 0 -- if succeeded (and index where the first slot was found)
 	*/
 	int findEmpty() const;
 };

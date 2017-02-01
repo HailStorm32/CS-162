@@ -12,7 +12,7 @@ void main()
 	string userInput = "";
 	char userChoice = ' ';
 
-	cout << "You have a list that can hold " << MAX_ITEMS << " items.\n\n";
+	cout << "You have a list that can hold " << MAX_ITEMS << " items. No duplicates.\n\n";
 
 	list1.print();
 
@@ -26,9 +26,13 @@ void main()
 			cout << "Please enter the text you want to add, and press enter when done: ";
 			cin >> userInput;
 
-			if (list1.insert(userInput) == false)
+			if (list1.insert(userInput) == true)
 			{
-				cout << "Failed!" << endl;
+				cout << "\nAdded!" << endl;
+			}
+			else
+			{
+				cout << "\nFailed!" << endl;
 			}
 			break;
 
@@ -36,14 +40,18 @@ void main()
 			cout << "Please enter the item you would like to remove (exactly like it was entered): ";
 			cin >> userInput;
 
-			if (list1.remove(userInput) == false)
+			if (list1.remove(userInput) == true)
 			{
-				cout << "Failed!" << endl;
+				cout << "\nRemoved!" << endl;
+			}
+			else
+			{
+				cout << "\nFailed!" << endl;
 			}
 			break;
 
 		case 'P':
-			cout << "Printing out list:" << endl;
+			cout << "\nPrinting out list:" << endl;
 
 			list1.print();
 			break;

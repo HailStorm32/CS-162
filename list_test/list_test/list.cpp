@@ -4,7 +4,7 @@
 
 using namespace std;
 
-//Initialize the variables 
+
 List::List()
 {
 	//Initialize every string in the array to nothing (NULL)
@@ -47,7 +47,7 @@ bool List::remove(string text)
 	itemLocation = inList(text);
 	items[itemLocation] = "";
 
-	//while the deleted string wasn't the last item & the next item isn't empty
+	//while the deleted string wasn't the last item & the next item isn't empty, 
 	while (itemLocation != (MAX_ITEMS - 1) && items[itemLocation + 1].empty() != true)
 	{
 		itemLocation++;
@@ -86,7 +86,6 @@ bool List::isEmpty() const
 	return true;
 }
 
-//returns a bool value if the array is empty of not
 bool List::isFull() const
 {
 	if (totalItems == MAX_ITEMS)
@@ -108,9 +107,10 @@ void List::print()
 	cout << "\n";
 }
 
-//Find the first empty slot in the string array and return the indx number
+
 int List::findEmpty() const
 {
+	//Find the first empty slot in the string array and return the indx number
 	for (int itemIndx = 0; itemIndx < MAX_ITEMS; itemIndx++)
 	{
 		if (items[itemIndx].empty() == true)
