@@ -1,7 +1,8 @@
+#pragma once
 /*
 Program: list.cpp
 Author: Demetri Van Sickle
-Date: 1/28/17
+Date: 2/3/17
 Description: Contains the list class implementation code
 */
 #include <iostream>
@@ -108,7 +109,7 @@ void List::print()
 {
 	for (int itemIndx = 0; itemIndx < MAX_ITEMS; itemIndx++)
 	{
-		cout << "\t[" << itemIndx + 1 << "]: " << items[itemIndx] << endl;
+		cout << items[itemIndx] << "  ";
 	}
 	cout << "\n";
 }

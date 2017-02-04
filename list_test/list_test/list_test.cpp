@@ -1,3 +1,10 @@
+/*
+Program: list_test.cpp
+Author: Demetri Van Sickle
+Date: 1/28/17
+Description: Use the list class and have the user change the contents of the list
+*/
+
 #include <iostream>
 #include "list.h"
 #include <string>

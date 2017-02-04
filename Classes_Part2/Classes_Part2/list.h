@@ -1,7 +1,7 @@
 /*
 Program: list.h
 Author: Demetri Van Sickle
-Date: 1/28/17
+Date: 2/3/17
 Description: Contains the list class definition code
 */
 #pragma once
@@ -17,54 +17,54 @@ public:
 
 	/*
 	Input:
-		string -- no empty string
+	string -- no empty string
 	Returns:
-		false -- if failed
-		true -- if succeeded
+	false -- if failed
+	true -- if succeeded
 	*/
 	bool insert(string text);
 
 	/*
 	Input:
-		string -- no empty string
+	string -- no empty string
 	Returns:
-		false -- if failed
-		true -- if succeeded
+	false -- if failed
+	true -- if succeeded
 	*/
 	bool remove(string text);
 
 	/*
 	Input:
-		string -- no empty string
+	string -- no empty string
 	Returns:
-		-1 -- if failed
-		# >= 0 -- if succeeded (and index where word was found)
+	-1 -- if failed
+	# >= 0 -- if succeeded (index where word was found)
 	*/
 	int inList(string text) const;
 
 	/*
 	Input:
-		NONE
+	NONE
 	Returns:
-		false -- if NOT empty
-		true -- if empty
+	false -- if NOT empty
+	true -- if empty
 	*/
 	bool isEmpty() const;
 
 	/*
 	Input:
-		NONE
+	NONE
 	Returns:
-		false -- if NOT full
-		true -- if full
+	false -- if NOT full
+	true -- if full
 	*/
 	bool isFull() const;
 
 	/*
 	Input:
-		NONE
+	NONE
 	Returns:
-		NONE
+	NONE
 	*/
 	void print();
 
@@ -74,10 +74,10 @@ private:
 
 	/*
 	Input:
-		NONE
+	NONE
 	Returns:
-		-1 -- if failed
-		# >= 0 -- if succeeded (and index where the first slot was found)
+	-1 -- if failed
+	# >= 0 -- if succeeded (and index where the first slot was found)
 	*/
 	int findEmpty() const;
 };
