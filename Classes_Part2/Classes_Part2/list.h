@@ -37,10 +37,10 @@ public:
 	Input:
 	string -- no empty string
 	Returns:
-	-1 -- if failed
-	# >= 0 -- if succeeded (index where word was found)
+	False -- if failed
+	True -- if succeeded
 	*/
-	int inList(string text) const;
+	bool inList(string text) const;
 
 	/*
 	Input:
@@ -80,4 +80,13 @@ private:
 	# >= 0 -- if succeeded (and index where the first slot was found)
 	*/
 	int findEmpty() const;
+
+	/*
+	Input:
+	string -- no empty string
+	Returns:
+	-1 -- if failed
+	# >= 0 -- if succeeded (and index where the first slot was found)
+	*/
+	int findWordLocation(string textToFind) const;
 };

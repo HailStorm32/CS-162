@@ -1,22 +1,23 @@
 A dog
 A Tree
-A dog
+A Get
+A Apple
 p
 R Tree
-A Apple
-A Tree
+P
+A Free
 c
 a Car
+p
 F Tree
 p
 A Blue
 A Goat
+p
+f Get
 A Red
 A write
 P
-R Goat
+R Red
+R Apple
 p
-A dog
-e
-r
-w

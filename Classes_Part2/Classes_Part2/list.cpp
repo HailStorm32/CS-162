@@ -27,7 +27,7 @@ List::List()
 bool List::insert(string text)
 {
 	//Make sure the string given isnt null, isnt already in the list or the list is full
-	if (text.empty() == true || inList(text) >= 0 || isFull() == true)
+	if (text.empty() == true || inList(text) == true || isFull() == true)
 	{
 		return false;
 	}
@@ -45,13 +45,13 @@ bool List::remove(string text)
 	int emptyLocation = 0;
 
 	//Make sure that the string exsits and that the string given wasn't null
-	if (inList(text) < 0 || text.empty() == true)
+	if (inList(text) == false || text.empty() == true)
 	{
 		return false;
 	}
 
 	//Get the item location and delete it
-	itemLocation = inList(text);
+	itemLocation = findWordLocation(text);
 	items[itemLocation] = "";
 
 	//while the deleted string wasn't the last item & the next item isn't empty, 
@@ -67,16 +67,16 @@ bool List::remove(string text)
 	return true;
 }
 
-int List::inList(string textToFind) const
+bool List::inList(string textToFind) const
 {
 	for (int itemIndx = 0; itemIndx < MAX_ITEMS; itemIndx++)
 	{
 		if (items[itemIndx] == textToFind)
 		{
-			return itemIndx;
+			return true;
 		}
 	}
-	return -1;
+	return false;
 }
 
 //returns a bool value if the array is empty of not 
@@ -121,6 +121,18 @@ int List::findEmpty() const
 	for (int itemIndx = 0; itemIndx < MAX_ITEMS; itemIndx++)
 	{
 		if (items[itemIndx].empty() == true)
+		{
+			return itemIndx;
+		}
+	}
+	return -1;
+}
+
+int List::findWordLocation(string textToFind) const
+{
+	for (int itemIndx = 0; itemIndx < MAX_ITEMS; itemIndx++)
+	{
+		if (items[itemIndx] == textToFind)
 		{
 			return itemIndx;
 		}

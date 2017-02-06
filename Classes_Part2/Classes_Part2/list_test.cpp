@@ -2,7 +2,7 @@
 Program: list_test.cpp
 Author: Demetri Van Sickle
 Date: 2/3/17
-Description: Use the list class and have the user change the contents of the list
+Description: Read commands from a file, and execute those commands
 */
 #include <iostream>
 #include <fstream>
@@ -34,6 +34,10 @@ int main()
 	{
 		cout << "\nError! Cant open file " << FILE_NAME << endl;
 		cout << "Aborting program!" << endl;
+		
+		//Allow console to stay open
+		cin.get();
+		cin.ignore();
 		return -1;
 	}
 
@@ -48,6 +52,10 @@ int main()
 	}
 
 	fileRead.close();
+	
+	//Allow console to stay open
+	cin.get();
+	cin.ignore();
 }
 
 
@@ -68,8 +76,10 @@ char interpretData(const char lineData[], string& dataToWrite)
 {
 	char command = ' ';
 
+	//Get the command from the first index
 	command = lineData[0];
 
+	//Convert cstring back into string and delete the first two chars, as that contains the command and a space
 	dataToWrite = lineData;
 	dataToWrite.erase(0, 2);
 
@@ -94,7 +104,7 @@ bool executeCommand(const string& data, char command, List& list1)
 {
 	switch (command)
 	{
-	case 'A':
+	case 'A': //Add
 		if (list1.insert(data))
 		{
 			cout << "Add:\t" << data << endl;
@@ -104,7 +114,7 @@ bool executeCommand(const string& data, char command, List& list1)
 			cout << "Add:\t" << data << " -- FAILED" << endl;
 		}
 		break;
-	case 'R':
+	case 'R': //Remove
 		if (list1.remove(data))
 		{
 			cout << "Remove:\t" << data << endl;
@@ -114,8 +124,8 @@ bool executeCommand(const string& data, char command, List& list1)
 			cout << "Remove:\t" << data << " -- FAILED" << endl;
 		}
 		break;
-	case 'F':
-		if (list1.inList(data) >= 0)
+	case 'F': //Find
+		if (list1.inList(data) == true)
 		{
 			cout << "Find:\t" << data << endl;
 		}
@@ -124,7 +134,7 @@ bool executeCommand(const string& data, char command, List& list1)
 			cout << "Find:\t" << data << " -- FAILED" << endl;
 		}
 		break;
-	case 'P':
+	case 'P': //Print
 		cout << "Print:  ";
 		list1.print();
 		break;
