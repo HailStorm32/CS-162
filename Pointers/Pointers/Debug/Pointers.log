@@ -1,6 +1,4 @@
 ﻿  studentList.cpp
-  student.cpp
-  Pointer_Test.cpp
-  Generating Code...
-  Pointers.vcxproj -> C:\Users\demet\Documents\GitHub\CS-162\Pointers\Debug\Pointers.exe
-  Pointers.vcxproj -> C:\Users\demet\Documents\GitHub\CS-162\Pointers\Debug\Pointers.pdb (Full PDB)
+d:\demetri van sickle\documents\github\cs-162\pointers\pointers\studentlist.cpp(120): warning C4715: 'StudentList::findEmpty': not all control paths return a value
+  Pointers.vcxproj -> D:\Demetri Van Sickle\Documents\GitHub\CS-162\Pointers\Debug\Pointers.exe
+  Pointers.vcxproj -> D:\Demetri Van Sickle\Documents\GitHub\CS-162\Pointers\Debug\Pointers.pdb (Full PDB)

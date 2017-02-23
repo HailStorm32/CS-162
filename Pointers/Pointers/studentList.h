@@ -44,9 +44,25 @@ public:
 	bool remove(char* name);
 
 
-	void print();
+	void print() const;
 
 
 private:
-	Student students[MAX_STUDENTS];
+	int itemsInList;
+
+	Student * students[MAX_STUDENTS];
+
+	/*
+	Returns:
+		-1 -- if list is full
+		index of empty slot -- if found
+	*/
+	int findEmpty();
+
+	/*
+	Returns:
+		-1 -- if list is empty
+		index of where item was found -- if found
+	*/
+	int findInList(char * name);
 };

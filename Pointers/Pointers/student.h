@@ -10,6 +10,7 @@ public:
 	Input:
 		cString -- no NULL
 		float -- 0.0-4.0
+			Out of bounds results in it being set to 0
 	*/
 	Student(float gpa, char* name);
 	
@@ -24,7 +25,6 @@ public:
 	/*
 	Input:
 		string -- no empty string
-			Out of bounds results in it being set to 0
 	Returns:
 		false -- if name is equal
 		true -- if name is NOT equal
@@ -34,6 +34,6 @@ public:
 	void print() const;
 
 private:
-	float gpa;
-	char* name;
+	float studentGpa;
+	char* studentName;
 };
