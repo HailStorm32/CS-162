@@ -11,5 +11,21 @@ using namespace std;
 
 void main()
 {
+	int num = -1;
+
+	LinkList list1;
+
+	list1.insert("Jack");
+
+	if (!list1.insert("Jack"))
+	{
+		cout << "FALSE" << endl;
+	}
+
+	list1.insert("Jamie");
+	
+	list1.insert("Bob");
+
+	num = list1.find("bob");
 
 }

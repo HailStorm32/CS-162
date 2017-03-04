@@ -70,9 +70,18 @@ private:
 	struct Node
 	{
 		string name;
-		Node* nextNode;
+		Node* nextNodeAddress;
 	};
 
 	int itemsInList;
 	Node* head;
+
+	/*
+	Input:
+		string -- no empty list
+	Returns:
+		True -- if string should be put AFTER the current string already in the list
+		Fasle -- if string should be put BEFORE the current string already in the list
+	*/
+	bool insertAfter(string nameToinsert, string nameInSlot);
 };
