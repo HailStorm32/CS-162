@@ -46,7 +46,7 @@ bool LinkList::insert(const string nameToInsert)
 
 	currentNode = head;
 
-	//Cycle until we find a word in the list that goes before our nameToInsert OR we reach the end of the list
+	//Cycle until we find a word in the list that goes BEFORE our nameToInsert OR we reach the end of the list
 	while (insertAfter(nameToInsert, currentNode->name) == true && currentNode->nextNodeAddress != NULL)
 	{
 		//Store the current as the previous
@@ -56,24 +56,35 @@ bool LinkList::insert(const string nameToInsert)
 		currentNode = currentNode->nextNodeAddress;
 	}
 
-	//If we ended the list on a name that goes after the our nameToInsert
-	if (currentNode->nextNodeAddress == NULL && insertAfter(nameToInsert, currentNode->name) == false)
+
+
+	//If we got to the end of the list and nameToInsert can be put AFTER the currentname
+	if (currentNode->nextNodeAddress == NULL && insertAfter(nameToInsert, currentNode->name) == true)
 	{
-		previousNode->nextNodeAddress = newNode;
+		currentNode->nextNodeAddress = newNode;
+
+		itemsInList++;
+		return true;
+	}
+	//If the first item
+	else if (previousNode == NULL)
+	{
+		head = newNode;
 
 		newNode->nextNodeAddress = currentNode;
 
+
+		/*head->nextNodeAddress = newNode;
+
+		if (insertAfter(nameToInsert, currentNode->name) == false)
+		{
+		newNode->nextNodeAddress = currentNode;
+		}*/
+
 		itemsInList++;
 		return true;
 	}
-	//If there was only one item in the list to begin with
-	else if (previousNode == NULL)
-	{
-		currentNode->nextNodeAddress = newNode;
-		itemsInList++;
-		return true;
-	}
-	//If we ran like we should have
+	//Inserting in the middle of list
 	else
 	{
 		previousNode->nextNodeAddress = newNode;
@@ -165,7 +176,7 @@ bool LinkList::insertAfter(string nameToInsert, string nameInSlot)
 	}
 
 	//Keep moving through the two strings until two chars of the same indx != OR we have reached the end of our shortest string
-	while (tolower(nameToInsert[indx]) == tolower(nameInSlot[indx]) && indx <= minStringSize)
+	while (indx <= minStringSize && tolower(nameToInsert[indx]) == tolower(nameInSlot[indx]))
 	{
 		indx++;
 	}

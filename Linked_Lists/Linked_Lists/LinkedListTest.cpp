@@ -15,7 +15,7 @@ void main()
 
 	LinkList list1;
 
-	list1.insert("Jack");
+	list1.insert("Apple");
 
 	/*if (!list1.insert("Jack"))
 	{
@@ -24,7 +24,11 @@ void main()
 
 	//list1.insert("Jamie");
 	
-	list1.insert("King");
+	list1.insert("Cat");
+
+	list1.insert("Buy");
+
+	list1.insert("appLE");
 
 	num = list1.find("bob");
 
