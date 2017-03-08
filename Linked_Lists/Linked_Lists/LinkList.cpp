@@ -73,14 +73,6 @@ bool LinkList::insert(const string nameToInsert)
 
 		newNode->nextNodeAddress = currentNode;
 
-
-		/*head->nextNodeAddress = newNode;
-
-		if (insertAfter(nameToInsert, currentNode->name) == false)
-		{
-		newNode->nextNodeAddress = currentNode;
-		}*/
-
 		itemsInList++;
 		return true;
 	}
@@ -93,36 +85,77 @@ bool LinkList::insert(const string nameToInsert)
 		itemsInList++;
 		return true;
 	}
-
-
-
-
-
-	/*
-		while (currentNode->nextNodeAddress != NULL)
-		{
-			currentNode = currentNode->nextNodeAddress;
-		}
-
-		currentNode->nextNodeAddress = newNode;
-
-		itemsInList++;
-
-		return true;*/
 }
 
 bool LinkList::remove(const string nameToRemove)
 {
-	return false;
+	Node* currentNode = NULL;
+	Node* previousNode = NULL;
+	int itemLocation = 0;
+
+	//Make sure given string isnt empty and that string is in the list
+	if (nameToRemove.empty() == true || find(nameToRemove) == 0)
+	{
+		return false;
+	}
+
+	currentNode = head;
+	itemLocation = find(nameToRemove);
+
+	//If we are deleting the last or only item in the list
+	if (itemLocation == itemsInList)
+	{
+		while (currentNode->nextNodeAddress != NULL)
+		{
+			previousNode = currentNode;
+			currentNode = currentNode->nextNodeAddress;
+		}
+
+		delete currentNode;
+
+		//If it was the only item in the list
+		if (previousNode == NULL)
+		{
+			head == NULL;
+		}
+		else
+		{
+			previousNode->nextNodeAddress = NULL;
+		}
+
+		itemsInList--;
+
+		return true;
+	}
+	else
+	{
+
+	}
+
+
+
+
+	return true;
 }
 
 void LinkList::print() const
 {
+	Node* currentNode;
+
+	currentNode = head;
+
+	while (currentNode->nextNodeAddress != NULL)
+	{
+		cout << currentNode->name << ", ";
+
+		currentNode = currentNode->nextNodeAddress;
+	}
+	cout << currentNode->name << endl;
 }
 
 int LinkList::count() const
 {
-	return 0;
+	return itemsInList;
 }
 
 int LinkList::find(const string nameToFind) const

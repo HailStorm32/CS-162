@@ -22,14 +22,30 @@ void main()
 		cout << "FALSE" << endl;
 	}*/
 
-	//list1.insert("Jamie");
+	list1.insert("Jamie");
 	
 	list1.insert("Cat");
+
+	list1.insert("applez");
 
 	list1.insert("Buy");
 
 	list1.insert("appLE");
 
-	num = list1.find("bob");
+	list1.insert("Great");
+
+	list1.insert("~");
+
+	list1.insert("Car");
+	
+	list1.insert("Apple");
+
+	list1.print();
+
+	cout << list1.count();
+
+	//Allow console to stay open
+	cin.get();
+	cin.ignore();
 
 }
