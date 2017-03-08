@@ -2,7 +2,7 @@
 Program: LinkList.cpp
 Author: Demetri Van Sickle
 Date: 3/2/17
-Description: Contains LinkList implementation code 
+Description: Contains LinkList implementation code
 */
 #include <iostream>
 #include "LinkList.h"
@@ -17,14 +17,14 @@ LinkList::LinkList()
 
 LinkList::~LinkList()
 {
-	
+
 }
 
 bool LinkList::insert(const string nameToInsert)
 {
-	Node* currentNode;
-	Node* previousNode;
-	
+	Node* currentNode = NULL;
+	Node* previousNode = NULL;
+
 	//Make sure given string isnt empty and that that string hasnt already been entered
 	if (nameToInsert.empty() == true || find(nameToInsert) > 0)
 	{
@@ -35,7 +35,7 @@ bool LinkList::insert(const string nameToInsert)
 	Node* newNode = new Node;
 	newNode->name = nameToInsert;
 	newNode->nextNodeAddress = NULL;
-	
+
 	//If list is empty, 
 	if (head == NULL)
 	{
@@ -46,30 +46,58 @@ bool LinkList::insert(const string nameToInsert)
 
 	currentNode = head;
 
-	while (insertAfter(nameToInsert, currentNode->name) == true)
+	//Cycle until we find a word in the list that goes before our nameToInsert OR we reach the end of the list
+	while (insertAfter(nameToInsert, currentNode->name) == true && currentNode->nextNodeAddress != NULL)
 	{
+		//Store the current as the previous
 		previousNode = currentNode;
+
+		//Advance to the next node
 		currentNode = currentNode->nextNodeAddress;
 	}
 
-	newNode->nextNodeAddress = 
-
-	previousNode->nextNodeAddress = newNode;
-
-	
-
-
-/*
-	while (currentNode->nextNodeAddress != NULL)
+	//If we ended the list on a name that goes after the our nameToInsert
+	if (currentNode->nextNodeAddress == NULL && insertAfter(nameToInsert, currentNode->name) == false)
 	{
-		currentNode = currentNode->nextNodeAddress;
+		previousNode->nextNodeAddress = newNode;
+
+		newNode->nextNodeAddress = currentNode;
+
+		itemsInList++;
+		return true;
+	}
+	//If there was only one item in the list to begin with
+	else if (previousNode == NULL)
+	{
+		currentNode->nextNodeAddress = newNode;
+		itemsInList++;
+		return true;
+	}
+	//If we ran like we should have
+	else
+	{
+		previousNode->nextNodeAddress = newNode;
+		newNode->nextNodeAddress = currentNode;
+
+		itemsInList++;
+		return true;
 	}
 
-	currentNode->nextNodeAddress = newNode;
-	
-	itemsInList++;
 
-	return true;*/
+
+
+
+	/*
+		while (currentNode->nextNodeAddress != NULL)
+		{
+			currentNode = currentNode->nextNodeAddress;
+		}
+
+		currentNode->nextNodeAddress = newNode;
+
+		itemsInList++;
+
+		return true;*/
 }
 
 bool LinkList::remove(const string nameToRemove)
@@ -90,7 +118,7 @@ int LinkList::find(const string nameToFind) const
 {
 	Node* currentNode;
 	int itemPosition = 1;
-	
+
 	//If the given string is empty or the list is empty, exit
 	if (nameToFind.empty() == true || itemsInList == 0)
 	{
@@ -105,7 +133,7 @@ int LinkList::find(const string nameToFind) const
 		currentNode = currentNode->nextNodeAddress;
 		itemPosition++;
 	}
-	
+
 	if (currentNode->nextNodeAddress == NULL)
 	{
 		return 0;
@@ -137,7 +165,7 @@ bool LinkList::insertAfter(string nameToInsert, string nameInSlot)
 	}
 
 	//Keep moving through the two strings until two chars of the same indx != OR we have reached the end of our shortest string
-	while (indx <= minStringSize || tolower(nameToInsert[indx]) == tolower(nameInSlot[indx]))
+	while (tolower(nameToInsert[indx]) == tolower(nameInSlot[indx]) && indx <= minStringSize)
 	{
 		indx++;
 	}

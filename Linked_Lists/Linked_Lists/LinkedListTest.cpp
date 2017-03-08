@@ -17,14 +17,14 @@ void main()
 
 	list1.insert("Jack");
 
-	if (!list1.insert("Jack"))
+	/*if (!list1.insert("Jack"))
 	{
 		cout << "FALSE" << endl;
-	}
+	}*/
 
-	list1.insert("Jamie");
+	//list1.insert("Jamie");
 	
-	list1.insert("Bob");
+	list1.insert("King");
 
 	num = list1.find("bob");
 
