@@ -92,6 +92,7 @@ bool LinkList::remove(const string nameToRemove)
 	Node* currentNode = NULL;
 	Node* previousNode = NULL;
 	int itemLocation = 0;
+	int indx = 0;
 
 	//Make sure given string isnt empty and that string is in the list
 	if (nameToRemove.empty() == true || find(nameToRemove) == 0)
@@ -116,7 +117,7 @@ bool LinkList::remove(const string nameToRemove)
 		//If it was the only item in the list
 		if (previousNode == NULL)
 		{
-			head == NULL;
+			head = NULL;
 		}
 		else
 		{
@@ -129,18 +130,39 @@ bool LinkList::remove(const string nameToRemove)
 	}
 	else
 	{
+		while (indx < (itemLocation - 1))
+		{
+			previousNode = currentNode;
+			currentNode = currentNode->nextNodeAddress;
+			indx++;
+		}
 
+		//If removing the first item
+		if (previousNode == NULL)
+		{
+			head = currentNode->nextNodeAddress;
+			delete currentNode;
+			itemsInList--;
+		}
+		else
+		{
+			previousNode->nextNodeAddress = currentNode->nextNodeAddress;
+			delete currentNode;
+			itemsInList--;
+		}
 	}
-
-
-
-
 	return true;
 }
 
 void LinkList::print() const
 {
 	Node* currentNode;
+
+	if (head == NULL)
+	{
+		cout << "List is empty!" << endl;
+		return;
+	}
 
 	currentNode = head;
 
@@ -178,7 +200,7 @@ int LinkList::find(const string nameToFind) const
 		itemPosition++;
 	}
 
-	if (currentNode->nextNodeAddress == NULL)
+	if (currentNode->nextNodeAddress == NULL && currentNode->name != nameToFind)
 	{
 		return 0;
 	}
@@ -190,12 +212,66 @@ int LinkList::find(const string nameToFind) const
 
 bool LinkList::removeAll()
 {
-	return false;
+	Node* currentNode = NULL;
+	Node* previousNode = NULL;
+
+	if (head == NULL)
+	{
+		return false;
+	}
+
+	currentNode = head;
+
+	head = NULL;
+
+	while (currentNode->nextNodeAddress != NULL)
+	{
+		previousNode = currentNode;
+		currentNode = currentNode->nextNodeAddress;
+
+		delete previousNode;
+	}
+
+	delete currentNode;
+
+	itemsInList = 0;
+
+	return true;
 }
 
-LinkList LinkList::duplicate(LinkList listToCopy)
+LinkList* LinkList::duplicate()
 {
-	return LinkList();
+	LinkList* newList;
+	Node* currentOldNode = NULL;
+	Node* currentNewNode = NULL;
+	Node* nodeToInsert = NULL;
+
+	currentOldNode = head;
+
+	currentNewNode = new Node;
+
+	currentNewNode->name = currentOldNode->name;
+
+	newList->head = currentNewNode;
+
+	for (int indx = 1; indx < itemsInList; indx++)
+	{
+		currentNewNode = currentNewNode->nextNodeAddress;
+
+		//Create a new node
+		nodeToInsert = new Node;
+
+		//Copy the name over
+		nodeToInsert->name = currentNewNode->name;
+
+		//Point the previousNode to the newNode
+		currentNewNode->nextNodeAddress = nodeToInsert;
+
+		//Move our new node to the one we just added
+		currentNewNode = currentNewNode->nextNodeAddress;
+	}
+
+	return newList;
 }
 
 bool LinkList::insertAfter(string nameToInsert, string nameInSlot)

@@ -15,6 +15,8 @@ void main()
 
 	LinkList list1;
 
+	LinkList* list2;
+
 	list1.insert("Apple");
 
 	/*if (!list1.insert("Jack"))
@@ -34,15 +36,15 @@ void main()
 
 	list1.insert("Great");
 
-	list1.insert("~");
-
 	list1.insert("Car");
 	
 	list1.insert("Apple");
 
 	list1.print();
 
-	cout << list1.count();
+	list1.print();
+
+
 
 	//Allow console to stay open
 	cin.get();

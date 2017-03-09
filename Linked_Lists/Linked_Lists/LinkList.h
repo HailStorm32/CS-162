@@ -64,7 +64,7 @@ public:
 	Returns:
 		Pointer to the copied LinkList
 	*/
-	LinkList duplicate(LinkList listToCopy);
+	LinkList* duplicate();
 
 private:
 	struct Node
