@@ -17,7 +17,7 @@ LinkList::LinkList()
 
 LinkList::~LinkList()
 {
-
+	removeAll();
 }
 
 bool LinkList::insert(const string nameToInsert)
@@ -241,7 +241,7 @@ bool LinkList::removeAll()
 
 LinkList* LinkList::duplicate()
 {
-	LinkList* newList;
+	LinkList* newList = new LinkList;
 	Node* currentOldNode = NULL;
 	Node* currentNewNode = NULL;
 	Node* nodeToInsert = NULL;
@@ -252,17 +252,19 @@ LinkList* LinkList::duplicate()
 
 	currentNewNode->name = currentOldNode->name;
 
+	currentNewNode->nextNodeAddress = NULL;
+
 	newList->head = currentNewNode;
 
 	for (int indx = 1; indx < itemsInList; indx++)
 	{
-		currentNewNode = currentNewNode->nextNodeAddress;
+		currentOldNode = currentOldNode->nextNodeAddress;
 
 		//Create a new node
 		nodeToInsert = new Node;
 
 		//Copy the name over
-		nodeToInsert->name = currentNewNode->name;
+		nodeToInsert->name = currentOldNode->name;
 
 		//Point the previousNode to the newNode
 		currentNewNode->nextNodeAddress = nodeToInsert;
@@ -270,6 +272,9 @@ LinkList* LinkList::duplicate()
 		//Move our new node to the one we just added
 		currentNewNode = currentNewNode->nextNodeAddress;
 	}
+
+	currentNewNode->nextNodeAddress = NULL;
+	newList->itemsInList = itemsInList;
 
 	return newList;
 }
