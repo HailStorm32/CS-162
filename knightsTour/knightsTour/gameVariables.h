@@ -1,12 +1,13 @@
-#pragma once
+/*
+================= psuedo code ===================
+findKnightsTour
+If move (i.e. x and y values) invalid
+return 0
+put moveNumber on board
+If board is full  <---Base case
+print board
+return 1
+Call findKnightsTour 8 more times with the 8 possible moves, and returned result to TotalValidSolutions
 
-struct KnightsTour
-{
-	const struct xYCords
-	{
-		int posX;
-		int posY;
-	};
-	
-	int board[BOARD_WIDTH][BOARD_HEIGHT] = {};
-};
+return TotalValidSolutions;
+*/
