@@ -143,9 +143,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="knightsTour.cpp" />
+    <ClCompile Include="knightsTourTest.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="gameVariables.h" />
+    <ClInclude Include="knightsTour.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

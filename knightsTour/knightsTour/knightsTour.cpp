@@ -2,102 +2,124 @@
 Program: knightsTour.cpp
 Author: Demetri Van Sickle
 Date: 3/9/17
-Description: Find solutions for a Knights Tour board. Uses brute force and prints out all board solutions
-*/
-/*
-================= psuedo code ===================
-findKnightsTour
-	If move (i.e. x and y values) invalid
-		return 0
-	put moveNumber on board
-	If board is full  <---Base case
-		print board
-		return 1
-	Call findKnightsTour 8 more times with the 8 possible moves, and returned result to TotalValidSolutions
-
-	return TotalValidSolutions;
+Description: Contains the list class implementation code
 */
 #include <iostream>
 #include <iomanip>
 #include <assert.h>   
+#include "knightsTour.h"
 
 using namespace std;
 
-const int BOARD_SIDE_LENGTH = 5;
-const int DEFAULT_START_POS_X = 4;
-const int DEFAULT_START_POS_Y = 0;
-
-const int MIN_LIMIT = 0;
-const int MAX_LIMIT = BOARD_SIDE_LENGTH - 1;
-const int MAX_NUM_OF_MOVES = BOARD_SIDE_LENGTH * BOARD_SIDE_LENGTH;
-
-
-
-struct KnightsTour
+KnightsTour::KnightsTour(unsigned int boardSize, unsigned int startingPosX, unsigned int startingPosY)
 {
-	int board[BOARD_SIDE_LENGTH][BOARD_SIDE_LENGTH] = {};
-	int startingPosX = DEFAULT_START_POS_X;
-	int startingPosY = DEFAULT_START_POS_Y;
-};
+	//Reset boardSize if it's out of bounds
+	if (boardSize > DEFAULT_BOARD_SIDE_LENGTH)
+	{
+		boardSize = DEFAULT_BOARD_SIDE_LENGTH;
+	}
+	else if (boardSize == 0)
+	{
+		boardSize = 2;
+	}
 
-void printBoard(const KnightsTour game);
-int findKnightsTour(KnightsTour game, int posX, int posY, int numberOfMoves=1);
+	this->boardSize = boardSize;
 
-void main()
-{
-	KnightsTour game1;
+	//Set the min & max values allowed for positions
+	minPosLimit = 0;
+	maxPosLimit = boardSize - 1;
 
-	cout << "Finding paths...\n" << endl;
+	maxNumOfMoves = boardSize*boardSize;
 
-	cout << "Total # of Solutions: " << findKnightsTour(game1, game1.startingPosX, game1.startingPosY) << endl;
+	//Reset x & y positions if they are out of bounds
+	if (startingPosX < minPosLimit || startingPosX > maxPosLimit)
+	{
+		startingPosX = boardSize / 2;
+	}
+	
+	if (startingPosY < minPosLimit || startingPosY > maxPosLimit)
+	{
+		startingPosY = boardSize / 2;
+	}
 
-	//Allow console to stay open
-	cin.get();
-	cin.ignore();
-
+	this->startingPosX = startingPosX;
+	this->startingPosY = startingPosY;
 }
 
-
-//==========================================================
-// Function: printBoard
-// Description: 
-//		print out the solved knights tour board
-//
-// Arguments:
-//		game (I) -- board that contains all the moves
-// Returns:
-//		NONE
-//==========================================================
-void printBoard(const KnightsTour game)
+void KnightsTour::printSolutions(bool toPrint)
 {
-	for (int row = 0; row < BOARD_SIDE_LENGTH; row++)
+	cout << "Total # of Solutions: " << findSolutions(mainBoard, startingPosX, startingPosY, toPrint) << endl;
+}
+
+int KnightsTour::findSolutions(Board boardCopy, unsigned int posX, unsigned int posY, bool toPrint, unsigned int numberOfMoves)
+{
+	unsigned int totalValidSolutions = 0;
+	unsigned int originalNum = 0;
+
+	//if the position was out of bounds, or there is alreay a move at that position
+	if ((posX < minPosLimit || posX > maxPosLimit) || (posY < minPosLimit || posY > maxPosLimit)
+		|| (boardCopy.board[posY][posX] > 0))
 	{
-		for (int col = 0; col < BOARD_SIDE_LENGTH; col++)
+		return 0;
+	}
+
+	assert(numberOfMoves <= maxNumOfMoves);
+
+	boardCopy.board[posY][posX] = numberOfMoves;
+
+	//If board is full
+	if (isFull(boardCopy) == true)
+	{
+		if (toPrint == true)
 		{
-			cout << setw(2) << setfill('0') << game.board[row][col] << " ";
+			print(boardCopy);
+		}
+		return 1;
+	}
+
+	originalNum = numberOfMoves;
+
+	totalValidSolutions += findSolutions(boardCopy, posX + 1, posY - 2, toPrint, ++numberOfMoves);
+	numberOfMoves = originalNum;
+	totalValidSolutions += findSolutions(boardCopy, posX + 2, posY - 1, toPrint, ++numberOfMoves);
+	numberOfMoves = originalNum;
+	totalValidSolutions += findSolutions(boardCopy, posX + 2, posY + 1, toPrint, ++numberOfMoves);
+	numberOfMoves = originalNum;
+	totalValidSolutions += findSolutions(boardCopy, posX + 1, posY + 2, toPrint, ++numberOfMoves);
+	numberOfMoves = originalNum;
+	//////////////////////////////////////////
+	totalValidSolutions += findSolutions(boardCopy, posX - 1, posY - 2, toPrint, ++numberOfMoves);
+	numberOfMoves = originalNum;
+	totalValidSolutions += findSolutions(boardCopy, posX - 2, posY - 1, toPrint, ++numberOfMoves);
+	numberOfMoves = originalNum;
+	totalValidSolutions += findSolutions(boardCopy, posX - 2, posY + 1, toPrint, ++numberOfMoves);
+	numberOfMoves = originalNum;
+	totalValidSolutions += findSolutions(boardCopy, posX - 1, posY + 2, toPrint, ++numberOfMoves);
+	numberOfMoves = originalNum;
+
+	return totalValidSolutions;
+}
+
+void KnightsTour::print(Board boardCopy) const
+{
+	for (unsigned int row = 0; row < boardSize; row++)
+	{
+		for (unsigned int col = 0; col < boardSize; col++)
+		{
+			cout << setw(2) << setfill('0') << boardCopy.board[row][col] << " ";
 		}
 		cout << endl;
 	}
 	cout << "\n\n";
 }
 
-//===========================================================
-// Function: boardIsFull
-// Description: Sees if the gameboard is full of valid moves
-//
-// Arguments:
-//		game (I) -- board that contains all the moves
-// Returns:
-//		True -- if board is full
-//		False -- if board is NOT full
-//===========================================================
-bool boardIsFull(const KnightsTour game)
+bool KnightsTour::isFull(Board boardCopy) const
 {
-	for (int row = 0; row < BOARD_SIDE_LENGTH; row++)
+	for (unsigned int row = 0; row < boardSize; row++)
 	{
-		for (int col = 0; col < BOARD_SIDE_LENGTH; col++)
+		for (unsigned int col = 0; col < boardSize; col++)
 		{
-			if (game.board[row][col] == 0)
+			if (boardCopy.board[row][col] == 0)
 			{
 				return false;
 			}
@@ -105,63 +127,3 @@ bool boardIsFull(const KnightsTour game)
 	}
 	return true;
 }
-
-//========================================================================================
-// Function: findKnightsTour
-// Description:  
-//		Recursively solves the knights tour using brute force.  
-//		Prints any solutions if finds.
-// Arguments:
-//		game (I/O) -- the board we’re working with 
-//		posX (I) -- the row we’re going to attempt to place the knight on this move.
-//		posY (I) -- the column we’re going to attempt place the knight on this move.
-//		numberOfMoves (I) -- the move we’re making
-// Returns: 
-//		totalValidSolutions -- The number of solutions the given board and move leads to
-//========================================================================================
-int findKnightsTour(KnightsTour game, int posX, int posY, int numberOfMoves)
-{
-	unsigned int totalValidSolutions = 0;
-	unsigned int originalNum = 0;
-	
-	//if the position was out of bounds, or there is alreay a move at that position
-	if ((posX < MIN_LIMIT || posX > MAX_LIMIT) || (posY < MIN_LIMIT || posY > MAX_LIMIT)
-		|| (game.board[posY][posX] > 0))
-	{
-		return 0;
-	}
-
-	assert(numberOfMoves <= MAX_NUM_OF_MOVES);
-
-	game.board[posY][posX] = numberOfMoves;
-
-	//If board is full
-	if (boardIsFull(game) == true)
-	{
-		printBoard(game);
-		return 1;
-	}
-
-	originalNum = numberOfMoves;
-
-	totalValidSolutions += findKnightsTour(game, posX + 1, posY - 2, ++numberOfMoves);
-	numberOfMoves = originalNum;
-	totalValidSolutions += findKnightsTour(game, posX + 2, posY - 1, ++numberOfMoves);
-	numberOfMoves = originalNum;
-	totalValidSolutions += findKnightsTour(game, posX + 2, posY + 1, ++numberOfMoves);
-	numberOfMoves = originalNum;
-	totalValidSolutions += findKnightsTour(game, posX + 1, posY + 2, ++numberOfMoves);
-	numberOfMoves = originalNum;
-	//////////////////////////////////////////
-	totalValidSolutions += findKnightsTour(game, posX - 1, posY - 2, ++numberOfMoves);
-	numberOfMoves = originalNum;
-	totalValidSolutions += findKnightsTour(game, posX - 2, posY - 1, ++numberOfMoves);
-	numberOfMoves = originalNum;
-	totalValidSolutions += findKnightsTour(game, posX - 2, posY + 1, ++numberOfMoves);
-	numberOfMoves = originalNum;
-	totalValidSolutions += findKnightsTour(game, posX - 1, posY + 2, ++numberOfMoves);
-	numberOfMoves = originalNum;
-
-	return totalValidSolutions;
-}
-
