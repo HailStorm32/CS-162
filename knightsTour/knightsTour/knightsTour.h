@@ -31,6 +31,15 @@ public:
 	*/
 	void printSolutions(bool toPrint);
 
+	/*
+	Input:
+		boardSize -- size of board to work with
+	Output:
+		xYPos (O) -- x & y position of best starting spot
+		totalValidSolutions -- number of valid solutions
+	*/
+	int findBestStartingPos(unsigned int xYPos[], int boardSize);
+
 private:
 	/*
 	Input:
@@ -41,6 +50,9 @@ private:
 	/*
 	Input:
 		Board -- copy of the board struct
+	Returns:
+		True -- if board is full of moves
+		False -- if board is NOT full of moves
 	*/
 	bool isFull(Board boardCopy) const;
 
@@ -51,6 +63,8 @@ private:
 		posY -- non-negative integer within boardSize
 		toPrint -- bool value
 		numberOfMoves -- non-negative integer within boardSize*boardSize
+	Returns:
+		totalValidSolutions -- number of valid solutions
 	*/
 	int findSolutions(Board boardCopy, unsigned int posX, unsigned int posY, bool toPrint, unsigned int numberOfMoves = 1);
 

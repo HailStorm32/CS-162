@@ -36,7 +36,7 @@ KnightsTour::KnightsTour(unsigned int boardSize, unsigned int startingPosX, unsi
 	{
 		startingPosX = boardSize / 2;
 	}
-	
+
 	if (startingPosY < minPosLimit || startingPosY > maxPosLimit)
 	{
 		startingPosY = boardSize / 2;
@@ -49,6 +49,38 @@ KnightsTour::KnightsTour(unsigned int boardSize, unsigned int startingPosX, unsi
 void KnightsTour::printSolutions(bool toPrint)
 {
 	cout << "Total # of Solutions: " << findSolutions(mainBoard, startingPosX, startingPosY, toPrint) << endl;
+}
+
+/*
+NOTE:
+	I know "findBestStartingPos" isn’t ideal, because there are multiple points with the same solution count and it doesn’t catch that,
+	but this is mainly just to see if it could be done (and I also had some extra time).
+*/
+int KnightsTour::findBestStartingPos(unsigned int xYPos[], int boardSize)
+{
+	//unsigned int currentXY[1] = {};
+	unsigned int currentNumOfSolutions = 0;
+	unsigned int bestXYPos[2] = {};
+	unsigned int highestNumOfSolutions = 0;
+
+	//Cycle through all posible x,y postions and keep track of which x,y pair had the highest amount of solutions
+	for (unsigned int row = 0; row < boardSize; row++)
+	{
+		for (unsigned int col = 0; col < boardSize; col++)
+		{
+			currentNumOfSolutions = findSolutions(mainBoard, row, col, false);
+
+			if (currentNumOfSolutions > highestNumOfSolutions)
+			{
+				highestNumOfSolutions = currentNumOfSolutions;
+				bestXYPos[0] = row + 1; //row
+				bestXYPos[1] = col + 1; //col
+			}
+		}
+	}
+	xYPos[0] = bestXYPos[0];
+	xYPos[1] = bestXYPos[1];
+	return highestNumOfSolutions;
 }
 
 int KnightsTour::findSolutions(Board boardCopy, unsigned int posX, unsigned int posY, bool toPrint, unsigned int numberOfMoves)
@@ -102,6 +134,10 @@ int KnightsTour::findSolutions(Board boardCopy, unsigned int posX, unsigned int 
 
 void KnightsTour::print(Board boardCopy) const
 {
+	static unsigned int numOfSolutions = 1;
+
+	cout << "\nSolution # " << numOfSolutions << ":" << endl;
+
 	for (unsigned int row = 0; row < boardSize; row++)
 	{
 		for (unsigned int col = 0; col < boardSize; col++)
@@ -111,6 +147,7 @@ void KnightsTour::print(Board boardCopy) const
 		cout << endl;
 	}
 	cout << "\n\n";
+	numOfSolutions++;
 }
 
 bool KnightsTour::isFull(Board boardCopy) const
